@@ -4,7 +4,7 @@
 %define snapshot 20220115
 
 Name: uavs3d
-Version: 1.0.1
+Version: 1.1.70
 Release: %{?snapshot:0.%{snapshot}.}1
 Source0: https://github.com/uavs3/uavs3d/archive/%{?snapshot:refs/heads/master}%{!?snapshot:%{version}/%{name}-%{version}}.tar.gz
 Patch0: uavs3d-compile.patch
@@ -39,6 +39,27 @@ Development files (Headers etc.) for %{name}.
 
 %prep
 %autosetup -p1 -n %{name}-%{?snapshot:master}%{!?snapshot:%{version}}
+
+# version.sh works only on a git checkout, not a
+# release tarball or equivalent.
+# So let's force it to say what it says on a git
+# checkout...
+cat >version.h <<EOF
+#ifndef __VERSION_H__
+#define __VERSION_H__
+
+#define VER_MAJOR  $(echo %{version} |cut -d. -f1)                // major version number
+#define VER_MINOR  $(echo %{version} |cut -d. -f2)                // minor version number
+#define VER_BUILD  $(echo %{version} |cut -d. -f3)             // build number
+
+#define VERSION_TYPE "release"
+#define VERSION_STR  "%{version}"
+#define VERSION_SHA1 "23a42eefbcde8f4d826b71f2e158f948f3e2b3ee"
+
+#endif // __VERSION_H__
+EOF
+rm version.sh
+
 %cmake \
 	-G Ninja
 
