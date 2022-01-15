@@ -1,0 +1,14 @@
+diff -up uavs3d-master/source/decore/threadpool.h.omv~ uavs3d-master/source/decore/threadpool.h
+--- uavs3d-master/source/decore/threadpool.h.omv~	2022-01-15 21:00:13.981721357 +0100
++++ uavs3d-master/source/decore/threadpool.h	2022-01-15 21:00:33.186798474 +0100
+@@ -10,9 +10,8 @@ typedef volatile long atom_t;   // 32 bi
+ 
+ #if defined(_WIN32)
+ #include "win32thread.h"
+-#else
+-
+ #pragma comment(lib, "pthreadVC2.lib")
++#else
+ 
+ #include <pthread.h>
+ #define uavs3d_pthread_t                pthread_t

@@ -1,0 +1,32 @@
+diff -up uavs3d-master/CMakeLists.txt.omv~ uavs3d-master/CMakeLists.txt
+--- uavs3d-master/CMakeLists.txt.omv~	2022-01-15 21:05:31.657014770 +0100
++++ uavs3d-master/CMakeLists.txt	2022-01-15 21:08:10.759673223 +0100
+@@ -11,8 +11,5 @@ add_subdirectory(./source)
+ 
+ add_executable(uavs3dec ${DIR_SRC_TEST})
+ 
+-if (NOT MSVC)
+-    target_link_libraries(uavs3dec m)
+-endif()
+ target_link_libraries(uavs3dec uavs3d)
+ #target_link_libraries(uavs3dec dl)
+diff -up uavs3d-master/source/CMakeLists.txt.omv~ uavs3d-master/source/CMakeLists.txt
+--- uavs3d-master/source/CMakeLists.txt.omv~	2022-01-15 21:05:46.017073968 +0100
++++ uavs3d-master/source/CMakeLists.txt	2022-01-15 21:08:04.793648441 +0100
+@@ -96,7 +96,7 @@ MESSAGE(STATUS "Target CPU\t\t\t: ${UAVS
+ find_package(Threads REQUIRED)
+ set(prefix "${CMAKE_INSTALL_PREFIX}")
+ set(includedir "include")
+-set(libdir "lib")
++set(libdir "lib${LIB_SUFFIX}")
+ set(pc_file "${CONFIG_DIR}/${LIBNAME}.pc")
+ 
+ set(CMAKE_INSTALL_INCLUDE_DIR "${CMAKE_INSTALL_PREFIX}/${includedir}")
+@@ -128,6 +128,7 @@ else()
+ MESSAGE(STATUS "BUILD_SHARED_LIBS \t\t: false")
+ endif()
+ add_library(${LIBNAME} ${DIR_UAVS3D_SRC} ${UAVS3D_ASM_FILES})
++set_target_properties(${LIBNAME} PROPERTIES VERSION 0.0 SOVERSION 0)
+ 
+ if (NOT MSVC)
+     target_link_libraries(${LIBNAME} m)
